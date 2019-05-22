@@ -8,7 +8,7 @@
 #include <pwd.h>
 
 
-#define MAX_LEN_LINE    30
+#define MAX_LEN_LINE    10
 #define LEN_HOSTNAME	30
 
 
@@ -34,40 +34,42 @@ int main(void)
             
     //username@hostname $ 형식으로 표현하기위함 
 
-        printf("@@여러개의 프로그램을 입력하는경우 a; b; c와 같은 형식으로 입력해주세요@@ \n 종료를 원하시면 exit 를 입력하세요\n\n");
+        //printf("@@여러개의 프로그램을 입력하는경우 a; b; c와 같은 형식으로 입력해주세요@@ \n 종료를 원하시면 exit 를 입력하세요\n\n");
         printf("%s@%s $ ",getpwuid(getuid())->pw_name,hostname);
+        
+        //입력한내용 s에 들어감
         s = fgets(command, MAX_LEN_LINE, stdin);
-        len = strlen(command);
+        len = strlen(command);// 3번째 과제------------정우
 
           ///////////////////////////////////////////////////////////////////////////////
         //exit 입력시 프로그램종료
         if(strcmp(s,"exit\n") == 0)
         {
             printf("Shell을 종료합니다. \n");
-            break;
+            break;//아예 메인함수 종료
         }
          ///////////////////////////////////////////////////////////////////////////////
 
        for(int i =0;i<len;i++)
        {
           if( s[i] == ';')
-           count++;
+           count++;//;을 받을때마다 카운트 하나씩 추가 = 프로그램 갯수
        }
-        printf("%d 개의 프로그램을 입력하셨습니다.\n 다음과 같은 순서대로 실행됩니다. \n",count+1);
+       
+       // count =0; //count 초기화
 
-        count =0; //count 초기화
-
+///
         char *ptr = strtok(s,"; ");
         while(ptr != NULL)
         {
             printf("  %s \n" ,ptr);
-            strcpy(ss[count],ptr);
-            count++;
+            strcpy(ss[c_count],ptr);
+            c_count++;
             ptr = strtok(NULL,"; ");
         }
        
 
-for(int i=0;i<count;i++)
+for(int i=0;i<c_count;i++)
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     s = ss[i];
@@ -77,7 +79,7 @@ for(int i=0;i<count;i++)
         
         if (s == NULL) {
             fprintf(stderr, "fgets failed\n");
-            exit(1);
+            exit(1);//if문만 탈출
         }
        
 
